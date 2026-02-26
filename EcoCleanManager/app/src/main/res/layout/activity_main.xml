@@ -1,0 +1,80 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F8F9FA">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="EcoClean Manager"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:textColor="#1B5E20"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Registro Digital de Residuos"
+            android:textSize="16sp"
+            android:textColor="#666666"
+            android:layout_marginBottom="32dp"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Tipo de Residuo"
+            android:layout_marginBottom="16dp"
+            app:boxStrokeColor="#2E7D32">
+
+            <AutoCompleteTextView
+                android:id="@+id/spinnerTipo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Cantidad (kg / m³)"
+            android:layout_marginBottom="32dp"
+            app:boxStrokeColor="#2E7D32">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editCantidad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/btnGuardar"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="GUARDAR REGISTRO"
+            android:backgroundTint="#2E7D32"
+            android:textSize="16sp"
+            app:cornerRadius="12dp"
+            android:layout_marginBottom="16dp"/>
+
+        <Button
+            android:id="@+id/btnVerReporte"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="VER REPORTE CONSOLIDADO"
+            android:textColor="#2E7D32"
+            android:textSize="14sp"/>
+
+    </LinearLayout>
+</ScrollView>
