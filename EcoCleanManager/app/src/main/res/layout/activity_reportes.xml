@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="#F8FAF8">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Historial de Limpieza"
+        android:textSize="22sp"
+        android:textColor="#1B5E20"
+        android:textStyle="bold"
+        android:layout_gravity="center"
+        android:layout_marginBottom="16dp"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnFiltrarMaestro"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="OPCIONES DE FILTRADO"
+        android:textColor="#2E7D32"
+        android:textSize="14sp"
+        app:icon="@android:drawable/ic_menu_sort_by_size"
+        app:iconPadding="12dp"
+        app:iconTint="#2E7D32"
+        app:strokeColor="#2E7D32"
+        app:strokeWidth="1.5dp"
+        app:cornerRadius="12dp"
+        android:layout_marginBottom="12dp"/>
+
+    <Button
+        android:id="@+id/btnGenerarWeb"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:text="GENERAR REPORTE OFICIAL"
+        android:backgroundTint="#2E7D32"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:cornerRadius="12dp"
+        android:layout_marginBottom="20dp" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvResiduos"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingBottom="80dp"/>
+
+        <WebView
+            android:id="@+id/webViewReporte"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:background="#FFFFFF" />
+    </FrameLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="© 2026 ECOLIM S.A.C. | Control de Trazabilidad"
+        android:gravity="center"
+        android:textSize="10sp"
+        android:textColor="#9E9E9E"
+        android:layout_marginTop="8dp"/>
+
+</LinearLayout>
