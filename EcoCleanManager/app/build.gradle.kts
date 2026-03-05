@@ -1,14 +1,12 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    // ESTA LÍNEA ES LA CLAVE: Habilita el procesador de anotaciones para Room
-    id("kotlin-kapt")
+    kotlin("kapt")
 }
 
 android {
     namespace = "com.example.ecocleanmanager"
-    // Subimos a 35 para dar soporte a librerías modernas
-    compileSdk = 35
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.example.ecocleanmanager"
@@ -39,29 +37,17 @@ android {
 }
 
 dependencies {
-    // 1. Configuración de Room (Base de Datos Local para ECOLIM)
     val room_version = "2.6.1"
     implementation("androidx.room:room-runtime:$room_version")
-    kapt("androidx.room:room-compiler:$room_version") // Ahora kapt será reconocido
     implementation("androidx.room:room-ktx:$room_version")
-
-    // 2. Consumo de API RESTful (Sincronización remota) [cite: 8]
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-
-    // 3. Ajustes de compatibilidad (Evita el error de SDK 36)
-    implementation("androidx.core:core-ktx:1.13.1")
-    implementation("androidx.appcompat:appcompat:1.7.0")
-
-    // 4. Librerías de Interfaz y Diseño
+    kapt("androidx.room:room-compiler:$room_version")
+    implementation("androidx.core:core-splashscreen:1.0.1")
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
-
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 }
-
-// ELIMINA la función fun kapt(s: String) { } que tenías al final,
-// ya no es necesaria con el plugin id("kotlin-kapt")

@@ -1,103 +1,82 @@
 package com.example.ecocleanmanager
 
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import android.content.Intent
 import android.os.Bundle
 import android.widget.*
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import androidx.room.Room
-import com.google.android.material.textfield.TextInputEditText
+// IMPORTANTE: Verifica que estas rutas coincidan con tus carpetas
+
+import com.example.ecocleanmanager.data.AppDatabase
+import com.example.ecocleanmanager.data.ResiduoEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity() {
 
-    // Instancia de la base de datos local (Punto 7: Arquitectura SQLite) [cite: 7]
-    private lateinit var db: AppDatabase
-
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // 1. Inicializar la Base de Datos Room
-        db = Room.databaseBuilder(
-            applicationContext,
-            AppDatabase::class.java,
-            "ecolim-db"
-        ).build()
+        val spinner = findViewById<Spinner>(R.id.spinnerCategorias)
+        val etCantidad = findViewById<EditText>(R.id.etCantidad)
+        val btnRegistrar = findViewById<Button>(R.id.btnRegistrar)
+        val btnVerReportes = findViewById<Button>(R.id.btnVerReportes)
 
-        // 2. Referencias a la UI mejorada (Punto 6: Componentes) [cite: 6]
-        val spinnerTipo = findViewById<AutoCompleteTextView>(R.id.spinnerTipo)
-        val editCantidad = findViewById<TextInputEditText>(R.id.editCantidad)
-        val btnGuardar = findViewById<Button>(R.id.btnGuardar)
-        val btnVerReporte = findViewById<Button>(R.id.btnVerReporte)
+        // Validación por menús desplegables para evitar errores de clasificación [cite: 2, 9]
+        val opciones = arrayOf("Plástico", "Papel/Cartón", "Vidrio", "Orgánico", "Peligroso")
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, opciones)
+        spinner.adapter = adapter
 
-        // 3. Configurar Menú Desplegable (Punto 9: Validación de tipos) [cite: 9]
-        val opciones = arrayOf("Plástico", "Papel/Cartón", "Vidrio", "Residuos Peligrosos", "Orgánico")
-        val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, opciones)
-        spinnerTipo.setAdapter(adapter)
+        // Registro digital en tiempo real [cite: 4]
+        btnRegistrar.setOnClickListener {
+            val tipo = spinner.selectedItem.toString()
+            val cantidadStr = etCantidad.text.toString()
 
-        // 4. Lógica para Guardar en Tiempo Real
-        btnGuardar.setOnClickListener {
-            val tipo = spinnerTipo.text.toString()
-            val cantidadStr = editCantidad.text.toString()
-
-            if (tipo.isNotEmpty() && cantidadStr.isNotEmpty()) {
-                val registro = ResiduoEntity(
-                    tipoResiduo = tipo,
-                    cantidad = cantidadStr.toDouble(),
-                    ubicacion = "Instalación Industrial Alfa", // Trazabilidad por sede
-                    estaSincronizado = false // Para futura sincronización con API REST [cite: 8]
-                )
-                guardarEnBaseDeDatos(registro, editCantidad)
+            if (cantidadStr.isNotEmpty()) {
+                val cantidad = cantidadStr.toDouble()
+                guardarEnBaseDeDatos(tipo, cantidad)
             } else {
-                Toast.makeText(this, "Complete todos los campos por favor", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Ingrese una cantidad válida", Toast.LENGTH_SHORT).show()
             }
         }
 
-        // 5. Lógica de Reportes Automáticos con Filtrado (Punto 9) [cite: 5, 9]
-        btnVerReporte.setOnClickListener {
-            generarReporteConsolidado()
+        // Comunicación entre pantallas para consolidación de información [cite: 3, 7]
+        btnVerReportes.setOnClickListener {
+            val intent = Intent(this, ReportesActivity::class.java)
+            startActivity(intent)
         }
     }
 
-    private fun guardarEnBaseDeDatos(residuo: ResiduoEntity, campoTexto: TextInputEditText) {
+    private fun guardarEnBaseDeDatos(tipo: String, cant: Double) {
+        // Objeto con trazabilidad (fecha y área) [cite: 4, 7]
+        val nuevoRegistro = ResiduoEntity(
+            tipo = tipo,
+            cantidad = cant,
+            unidad = "Kg",
+            fecha = System.currentTimeMillis(),
+            area = "Planta Industrial",
+            sincronizado = false
+        )
+
         lifecycleScope.launch(Dispatchers.IO) {
-            db.residuoDao().insertarRegistro(residuo) // Registro digital en tiempo real
-            withContext(Dispatchers.Main) {
-                Toast.makeText(this@MainActivity, "¡Registro guardado exitosamente!", Toast.LENGTH_SHORT).show()
-                campoTexto.text?.clear()
-            }
-        }
-    }
+            try {
+                val db = AppDatabase.getDatabase(this@MainActivity)
+                db.residuoDao().insertarRegistro(nuevoRegistro)
 
-    private fun generarReporteConsolidado() {
-        lifecycleScope.launch(Dispatchers.IO) {
-            val lista = db.residuoDao().obtenerTodosLosRegistros()
-
-            // Cálculo automático de cantidades (Punto 5) [cite: 5]
-            val resumen = lista.groupBy { it.tipoResiduo }
-                .mapValues { entry -> entry.value.sumOf { it.cantidad } }
-
-            withContext(Dispatchers.Main) {
-                if (lista.isEmpty()) {
-                    Toast.makeText(this@MainActivity, "No hay datos registrados aún", Toast.LENGTH_SHORT).show()
-                    return@withContext
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(this@MainActivity, "¡Registrado con éxito!", Toast.LENGTH_SHORT).show()
+                    findViewById<EditText>(R.id.etCantidad).text.clear()
                 }
-
-                val reporteMsg = StringBuilder("Resumen de Recolección Actual:\n\n")
-                resumen.forEach { (tipo, total) ->
-                    reporteMsg.append("• $tipo: ${String.format("%.2f", total)} kg/m³\n")
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    // Muestra el error real en el logcat para debuguear
+                    Toast.makeText(this@MainActivity, "Error en SQLite: ${e.message}", Toast.LENGTH_LONG).show()
                 }
-
-                // Interfaz de reporte mediante Diálogo de Alerta [cite: 6]
-                AlertDialog.Builder(this@MainActivity)
-                    .setTitle("Reporte Automático - ECOLIM S.A.C.")
-                    .setMessage(reporteMsg.toString())
-                    .setPositiveButton("Cerrar", null)
-                    .setIcon(android.R.drawable.ic_menu_agenda)
-                    .show()
             }
         }
     }

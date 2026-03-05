@@ -1,9 +1,13 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.EcoCleanManager" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+<resources>
+    <style name="Theme.EcoCleanManager" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">#2E7D32</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorSecondary">#1976D2</item>
+        <item name="android:statusBarColor">#1B5E20</item>
     </style>
-
-    <style name="Theme.EcoCleanManager" parent="Base.Theme.EcoCleanManager" />
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
+        <item name="windowSplashScreenBackground">#2E7D32</item>
+        <item name="postSplashScreenTheme">@style/Theme.EcoCleanManager</item>
+    </style>
 </resources>
