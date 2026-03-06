@@ -5,14 +5,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    android:background="#F8FAF8">
+    android:background="@color/bg_app">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Historial de Limpieza"
         android:textSize="22sp"
-        android:textColor="#1B5E20"
+        android:textColor="@color/green_primary"
         android:textStyle="bold"
         android:layout_gravity="center"
         android:layout_marginBottom="16dp"/>
@@ -23,12 +23,12 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:text="OPCIONES DE FILTRADO"
-        android:textColor="#2E7D32"
+        android:textColor="@color/green_primary"
         android:textSize="14sp"
         app:icon="@android:drawable/ic_menu_sort_by_size"
         app:iconPadding="12dp"
-        app:iconTint="#2E7D32"
-        app:strokeColor="#2E7D32"
+        app:iconTint="@color/green_primary"
+        app:strokeColor="@color/green_primary"
         app:strokeWidth="1.5dp"
         app:cornerRadius="12dp"
         android:layout_marginBottom="12dp"/>

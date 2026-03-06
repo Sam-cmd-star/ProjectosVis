@@ -1,27 +1,36 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F0F4F0">
+    android:background="@color/bg_app">
 
     <View
         android:layout_width="match_parent"
         android:layout_height="180dp"
-        android:background="@drawable/header_background" /> <LinearLayout
+        android:background="@drawable/header_background" />
+
+    <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="24dp">
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="77dp"
+        android:gravity="center"
+        android:src="@mipmap/ic_launcher_round"/>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:text="ECOLIM S.A.C."
         android:textColor="#FFFFFF"
         android:textSize="32sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_marginTop="20dp"/>
+        android:textStyle="bold" />
 
     <TextView
         android:layout_width="match_parent"
@@ -36,7 +45,8 @@
         android:layout_height="wrap_content"
         app:cardCornerRadius="20dp"
         app:cardElevation="8dp"
-        app:cardUseCompatPadding="true">
+        app:cardUseCompatPadding="true"
+        app:cardBackgroundColor="@color/bg_card">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -50,7 +60,7 @@
                 android:text="Nuevo Registro"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:textColor="#333333"
+                android:textColor="@color/text_primary"
                 android:layout_marginBottom="20dp"/>
 
             <TextView
@@ -58,7 +68,7 @@
                 android:layout_height="wrap_content"
                 android:text="Categoría de Residuo"
                 android:textSize="12sp"
-                android:textColor="#777777"/>
+                android:textColor="@color/text_secondary"/>
 
             <Spinner
                 android:id="@+id/spinnerCategorias"
@@ -72,15 +82,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Cantidad recolectada (Kg)"
-                app:boxStrokeColor="#2E7D32"
-                app:hintTextColor="#2E7D32">
+                app:boxStrokeColor="@color/green_primary"
+                app:hintTextColor="@color/green_primary">
+
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etCantidad"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="numberDecimal"
-                    android:textColor="#333333"/>
+                    android:textColor="@color/text_primary"
+                    android:textColorHint="@color/text_secondary"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
